@@ -1,0 +1,1 @@
+Calcula os autovalores e autovetores de uma matriz com entrada de dados em excel e saída com a geração de uma planilha output.xlsx de n+1 x n no qual a primeira linha é formada por autovalores e as demais linhas formam um matriz quadrada dos autovetores

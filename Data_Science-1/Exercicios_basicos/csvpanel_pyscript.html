@@ -1,0 +1,61 @@
+<html>
+    <head>
+      <title>Testando o Pyscript</title>
+      <meta charset="utf-8">
+      <link rel="icon" type="image/x-icon" href="./favicon.png">
+      <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.js"></script>
+      <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.2.min.js"></script>
+      <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.2.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@holoviz/panel@0.13.1/dist/panel.min.js"></script>
+      <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+      <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+      <style>
+        body {
+            margin: 2em;
+        }
+      </style>
+    </head>
+    <py-env>
+      - pandas
+      - matplotlib
+      - seaborn
+      - panel==0.13.1
+    </py-env>
+    <body>
+        <h1>Visualizing CSVs with Pandas, Seaborn, Panel and PyScript</h1>
+        <div id="fileinput"></div>
+        <div id="op"></div>
+        <py-script>
+import io
+
+import pandas as pd
+import panel as pn
+import seaborn as sns
+from matplotlib.figure import Figure
+
+pn.config.sizing_mode="stretch_width"
+
+fileInput = pn.widgets.FileInput(accept=".csv").servable(target="fileinput")
+
+@pn.depends(fileInput)
+def to_plot(file: bytes):
+    if file is None:
+        return "Faça upload a `.csv` para plotar a primeira (x) e a ultima coluna (y)."
+    
+    data = pd.read_csv(io.BytesIO(file))
+    x = data.iloc[:,0] 
+    y = data.iloc[:,-1] 
+    
+    fig = Figure(figsize=(10, 6))
+    ax = fig.add_subplot(111)
+    
+    sns.lineplot(x=x, y=y, data=data, ax=ax)
+    return fig
+
+pn.Column(
+    to_plot
+).servable(target="op")
+None # For some reason an error is raised if I end with .servable()
+        </py-script>
+  </body>
+  </html>

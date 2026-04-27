@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testando PyScript</title>
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+  <py-env>
+    - matplotlib
+    - numpy
+    - pandas
+  </py-env>
+  <py-script>
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.RandomState(0)
+x = np.linspace(0, 10, 100)
+y = rng.randn(100)
+# Plot the data with Matplotlib defaults
+plt.plot(x, y)
+plt
+  </py-script>
+</body>
+</html>
