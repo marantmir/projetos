@@ -1,0 +1,388 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMQ4XtzDdcsl2osDAmQmofe",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Rivianee/data-science/blob/master/AN%C3%81LISE%20DE%20SENTIMENTOS%20DE%20NOT%C3%8DCIAS\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install openai"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "WrZMPR6MZsDR",
+        "outputId": "40003a2b-50a1-496c-e6d9-5706633db01b"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: openai in /usr/local/lib/python3.10/dist-packages (0.27.8)\n",
+            "Requirement already satisfied: requests>=2.20 in /usr/local/lib/python3.10/dist-packages (from openai) (2.27.1)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from openai) (4.65.0)\n",
+            "Requirement already satisfied: aiohttp in /usr/local/lib/python3.10/dist-packages (from openai) (3.8.4)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests>=2.20->openai) (1.26.15)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests>=2.20->openai) (2022.12.7)\n",
+            "Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests>=2.20->openai) (2.0.12)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests>=2.20->openai) (3.4)\n",
+            "Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (23.1.0)\n",
+            "Requirement already satisfied: multidict<7.0,>=4.5 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (6.0.4)\n",
+            "Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (4.0.2)\n",
+            "Requirement already satisfied: yarl<2.0,>=1.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (1.9.2)\n",
+            "Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (1.3.3)\n",
+            "Requirement already satisfied: aiosignal>=1.1.2 in /usr/local/lib/python3.10/dist-packages (from aiohttp->openai) (1.3.1)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "pip install beautifulsoup4"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "O2tWBrvsz-ua",
+        "outputId": "31a477ff-1239-4441-8983-d8cf6a9e374c"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: beautifulsoup4 in /usr/local/lib/python3.10/dist-packages (4.11.2)\n",
+            "Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.10/dist-packages (from beautifulsoup4) (2.4.1)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "pip install textblob"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "uVxXwfCQz_q3",
+        "outputId": "617d75e6-09f8-47f5-a459-4c18296209ea"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: textblob in /usr/local/lib/python3.10/dist-packages (0.17.1)\n",
+            "Requirement already satisfied: nltk>=3.1 in /usr/local/lib/python3.10/dist-packages (from textblob) (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk>=3.1->textblob) (8.1.3)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk>=3.1->textblob) (1.2.0)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk>=3.1->textblob) (2022.10.31)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk>=3.1->textblob) (4.65.0)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import openai\n",
+        "openai.api_key = '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'"
+      ],
+      "metadata": {
+        "id": "gvhMZCiAuBkU"
+      },
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install newsapi-python"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6D4hl4imxNq3",
+        "outputId": "fa469d3d-d3aa-4700-8080-b70ea326dd77"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting newsapi-python\n",
+            "  Downloading newsapi_python-0.2.7-py2.py3-none-any.whl (7.9 kB)\n",
+            "Requirement already satisfied: requests<3.0.0 in /usr/local/lib/python3.10/dist-packages (from newsapi-python) (2.27.1)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests<3.0.0->newsapi-python) (1.26.15)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests<3.0.0->newsapi-python) (2022.12.7)\n",
+            "Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests<3.0.0->newsapi-python) (2.0.12)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests<3.0.0->newsapi-python) (3.4)\n",
+            "Installing collected packages: newsapi-python\n",
+            "Successfully installed newsapi-python-0.2.7\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.sentiment import SentimentIntensityAnalyzer\n",
+        "from newsapi import NewsApiClient\n",
+        "\n",
+        "# Instalar os recursos necessários do NLTK\n",
+        "nltk.download('vader_lexicon')\n",
+        "\n",
+        "# Configurar a chave de API da News API\n",
+        "newsapi = NewsApiClient(api_key='SUA_CHAVE_DE_API')\n",
+        "\n",
+        "# Inicializar o SentimentIntensityAnalyzer\n",
+        "sia = SentimentIntensityAnalyzer()\n",
+        "\n",
+        "# Variáveis para contabilizar as categorias de sentimentos\n",
+        "total_neutras = 0\n",
+        "total_positivas = 0\n",
+        "total_negativas = 0\n",
+        "\n",
+        "# Buscar as notícias do mercado financeiro\n",
+        "result = newsapi.get_everything(q='mercado financeiro', language='pt', sort_by='publishedAt', page_size=20)\n",
+        "\n",
+        "# Analisar o sentimento de cada notícia e calcular a soma\n",
+        "for noticia in result['articles']:\n",
+        "    titulo = noticia['title']\n",
+        "    sentiment = sia.polarity_scores(titulo)\n",
+        "    compound_score = sentiment['compound']\n",
+        "    \n",
+        "    if compound_score >= 0.1:\n",
+        "        total_positivas += 1\n",
+        "    elif compound_score <= -0.1:\n",
+        "        total_negativas += 1\n",
+        "    else:\n",
+        "        total_neutras += 1\n",
+        "\n",
+        "    print(\"Notícia:\", titulo)\n",
+        "    print(\"Sentimento:\", compound_score)\n",
+        "    print()\n",
+        "\n",
+        "# Exibir a soma das notícias neutras, positivas e negativas\n",
+        "print(\"Total de notícias neutras:\", total_neutras)\n",
+        "print(\"Total de notícias positivas:\", total_positivas)\n",
+        "print(\"Total de notícias negativas:\", total_negativas)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NwH5HYlVokrp",
+        "outputId": "5b5fb6ef-8daa-487e-d33a-f04de45cca3d"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package vader_lexicon to /root/nltk_data...\n",
+            "[nltk_data]   Package vader_lexicon is already up-to-date!\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Notícia: Agenda do dia: FGV publica IGP-DI de maio; BC divulga Relatório de Economia Bancária de 2022\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Reforma tributária será apresentada hoje: entenda os principais pontos\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Governança gera valor e reduz custo de capital\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Desenrola: governo vai parcelar dívidas de até R$ 5 mil em 60 vezes; veja regras\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Mercado traz previsão de mais dinheiro para brasileiros\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Vai prestar serviço como MEI? Entenda o que vale mais a pena\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Caixa leva à Fazenda medidas para impulsionar crédito\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Como \"Ubers estatais\" frustram tanto passageiros quanto motoristas\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Brasileiros deixam expirar quase 40 bi de milhas em um ano; veja como utilizar pontuação\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Há vagas: mais de 2,4 mil chances de emprego estão disponíveis no Estado\n",
+            "Sentimento: -0.1027\n",
+            "\n",
+            "Notícia: Conheça diferentes tipos de investimento e não perca seu dinheiro\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Procurando trabalho? Veja 5 dicas para fugir do golpe do emprego falso\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Vai para onde? Veja possíveis destinos de Messi após deixar o PSG\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Roborock lança centro de limpeza residencial: pioneiro em uma nova era de lares imaculados e bem-estar aprimorado\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Unifique Telecomunicações S A : Fato Relevante\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Endividamento à vista: Como o cartão de crédito está atrapalhando os brasileiros!\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Flamengo de olho em zagueiro do Benfica, atacante da Seleção interessa ao Bayern de Munique… o Dia do Mercado!\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Rainha da Holanda visita comércio em SP e elogia Pix: “Impacto tremendo”\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: “Infiltrado” em bancão, Thiago Nigro recebe oferta de fundo a 36% do CDI e lança nova previdência no mercado\n",
+            "Sentimento: -0.296\n",
+            "\n",
+            "Notícia: 'Inflação estaria em 12% e 13% se não fosse a maior alta de juros em ano eleitoral', diz Campos Neto\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Total de notícias neutras: 18\n",
+            "Total de notícias positivas: 0\n",
+            "Total de notícias negativas: 2\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.sentiment import SentimentIntensityAnalyzer\n",
+        "from newsapi import NewsApiClient\n",
+        "\n",
+        "# Instalar os recursos necessários do NLTK\n",
+        "nltk.download('vader_lexicon')\n",
+        "\n",
+        "# Configurar a chave de API da News API\n",
+        "newsapi = NewsApiClient(api_key='2bfc65ae3afe48c8a52734e5f843953c')\n",
+        "\n",
+        "# Inicializar o SentimentIntensityAnalyzer\n",
+        "sia = SentimentIntensityAnalyzer()\n",
+        "\n",
+        "# Variáveis para contabilizar as categorias de sentimentos\n",
+        "total_neutras = 0\n",
+        "total_positivas = 0\n",
+        "total_negativas = 0\n",
+        "\n",
+        "# Buscar as notícias do mercado financeiro\n",
+        "result = newsapi.get_everything(q='mercado financeiro', language='pt', sort_by='publishedAt', page_size=5)\n",
+        "\n",
+        "# Analisar o sentimento de cada notícia e calcular a soma\n",
+        "for noticia in result['articles']:\n",
+        "    titulo = noticia['title']\n",
+        "    sentiment = sia.polarity_scores(titulo)\n",
+        "    compound_score = sentiment['compound']\n",
+        "    \n",
+        "    if compound_score >= 0.1:\n",
+        "        total_positivas += 1\n",
+        "    elif compound_score <= -0.1:\n",
+        "        total_negativas += 1\n",
+        "    else:\n",
+        "        total_neutras += 1\n",
+        "\n",
+        "    print(\"Notícia:\", titulo)\n",
+        "    print(\"Sentimento:\", compound_score)\n",
+        "    print()\n",
+        "\n",
+        "# Exibir a soma das notícias neutras, positivas e negativas\n",
+        "print(\"Total de notícias neutras:\", total_neutras)\n",
+        "print(\"Total de notícias positivas:\", total_positivas)\n",
+        "print(\"Total de notícias negativas:\", total_negativas)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "HVvKlY_unqVL",
+        "outputId": "54cbf256-670a-4919-ef34-9e0303f0a4e3"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Notícia: Agenda do dia: FGV publica IGP-DI de maio; BC divulga Relatório de Economia Bancária de 2022\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Reforma tributária será apresentada hoje: entenda os principais pontos\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Governança gera valor e reduz custo de capital\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Desenrola: governo vai parcelar dívidas de até R$ 5 mil em 60 vezes; veja regras\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Notícia: Mercado traz previsão de mais dinheiro para brasileiros\n",
+            "Sentimento: 0.0\n",
+            "\n",
+            "Total de notícias neutras: 5\n",
+            "Total de notícias positivas: 0\n",
+            "Total de notícias negativas: 0\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package vader_lexicon to /root/nltk_data...\n",
+            "[nltk_data]   Package vader_lexicon is already up-to-date!\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
