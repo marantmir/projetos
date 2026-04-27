@@ -1,0 +1,46 @@
+MIT License
+
+Copyright (c) 2024 MedVision AI Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+IMPORTANT LEGAL NOTICE:
+
+This software is intended for DEMONSTRATION AND EDUCATIONAL PURPOSES ONLY.
+
+This system is NOT certified for medical use and MUST NOT be used for:
+- Clinical decision-making
+- Patient diagnosis
+- Surgical guidance
+- Medical device integration
+- Healthcare production environments
+
+Use of this software in clinical settings requires:
+1. Regulatory approval (FDA 510(k), CE Mark, ANVISA, etc.)
+2. Clinical validation studies
+3. ISO 13485 certification
+4. HIPAA/LGPD compliance implementation
+5. Professional medical oversight
+
+The authors and contributors assume NO LIABILITY for any medical decisions,
+patient outcomes, or healthcare incidents related to the use of this software.
+
+Always consult qualified healthcare professionals for medical decisions.

@@ -1,0 +1,37 @@
+# Core Framework
+fastapi>=0.109.0,<0.116.0
+uvicorn[standard]>=0.27.0,<0.33.0
+python-multipart>=0.0.6
+
+# Data Validation (versões com wheels pré-compiladas)
+pydantic>=2.5.0,<2.7.0
+pydantic-settings>=2.1.0,<2.3.0
+
+# IA e ML
+google-generativeai>=0.3.0
+ultralytics>=8.0.0
+opencv-python-headless>=4.8.0
+librosa>=0.10.0
+numpy>=1.24.0,<2.0.0
+soundfile>=0.12.0
+
+# Segurança e HTTP
+python-jose[cryptography]>=3.3.0
+httpx>=0.25.0
+
+# Cloud Storage
+boto3>=1.34.0
+google-cloud-storage>=2.14.0
+
+# WebSocket
+websockets>=12.0
+
+# Testes
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-cov>=4.1.0
+pytest-timeout>=2.2.0
+pytest-mock>=3.12.0
+
+# Dev Tools
+black>=24.0.0

@@ -1,0 +1,143 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+dist-ssr/
+*.local
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Docker
+*.dockerignore
+
+# Data files
+data/
+uploads/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.jpg
+*.jpeg
+*.png
+*.pt
+*.onnx
+
+# Project specific - Test scripts and files
+scripts_de_teste/
+arquivos_de_teste/
+Instrument_Anatomy_Original_Dataset.zip
+backend/storage/
+backend/temp/
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
+backend/data/models/*
+!backend/data/models/.gitkeep
+backend/storage/reports/*
+!backend/storage/reports/.gitkeep
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+gcp-credentials.json
+service-account.json
+
+# Cloud secrets
+*.key
+secrets/
+credentials.json
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+!backend/notebooks/*.ipynb
+
+# Model files
+models/
+*.pth
+*.h5
+*.pkl
+*.joblib
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak

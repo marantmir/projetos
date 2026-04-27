@@ -1,0 +1,89 @@
+# Docker Compose - Ambiente de Desenvolvimento
+# Uso: docker-compose up --build
+
+version: '3.9'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: medvision_backend_dev
+    ports:
+      - "8000:8000"
+    volumes:
+      # Volume para hot-reload em desenvolvimento
+      - ./backend:/app
+      # Volume para dados persistentes (uploads, modelos)
+      - medvision_data:/app/data
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+      - YOLO_MODEL_PATH=/app/data/models/yolov8n.pt
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - STORAGE_TYPE=local
+      - STORAGE_LOCAL_PATH=/app/data/uploads
+      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis
+    networks:
+      - medvision_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend React + Nginx (modo dev usa Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: medvision_frontend_dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - medvision_network
+    command: npm run dev -- --host 0.0.0.0
+
+  # Redis (para cache e gerenciamento de sessões/jobs)
+  redis:
+    image: redis:7-alpine
+    container_name: medvision_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - medvision_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  medvision_data:
+    driver: local
+  redis_data:
+    driver: local
+  frontend_node_modules:
+    driver: local
+
+networks:
+  medvision_network:
+    driver: bridge
