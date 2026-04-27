@@ -1,0 +1,51 @@
+Setores censitarios do Censo Brasileiro de 2010
+
+
+Para saber mais acesse:
+Website: https://basedosdados.org/dataset/br-geobr-mapas
+Github: https://github.com/basedosdados/mais/tree/master/bases/br_geobr_mapas
+
+Ajude a manter o projeto :)
+Apoia-se: https://apoia.se/basedosdados
+
+Publicado por
+-------------
+Nome: João Carabetta
+Código: https://github.com/basedosdados/mais/tree/master/bases/br_geobr_mapas/code
+Website: https://basedosdados.org
+Email: joao.carabetta@gmail.comTratado por
+-----------
+Nome: geobr
+Código: https://github.com/ipeaGIT/geobr
+Website: https://github.com/ipeaGIT/geobr
+Email: 
+
+Partições (Filtre a tabela por essas colunas para economizar dinheiro e tempo)
+---------
+- sigla_uf
+
+Nível da Observação (i.e. a granularidade da linha)
+-------------------
+- setor censitario
+
+Colunas identificando linhas unicamente
+-------------------
+- id_setor_censitario
+
+Cobertura Temporal
+------------------
+- 2010
+
+Cobertura Espacial
+------------------
+- brasil
+
+Tratamento
+----------
+Limpeza para consistência
+
+Frequencia de Atualização
+-------------------------
+unico
+
+

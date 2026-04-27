@@ -1,0 +1,53 @@
+Tabela contendo informações de escolas originais do Catálogo de Escolas do Inep.
+
+Para saber mais acesse:
+Website: 
+Github: 
+
+Ajude a manter o projeto :)
+Apoia-se: https://apoia.se/basedosdados
+
+Publicado por
+-------------
+Nome: Ricardo Dahis
+Código: 
+Website: www.ricardodahis.com
+Email: rdahis@basedosdados.org
+Tratado por
+-----------
+Nome: Ricardo Dahis
+Website: www.ricardodahis.com
+Email: rdahis@basedosdados.org
+
+
+
+
+Colunas identificando linhas unicamente
+-------------------
+- id_escola
+
+
+
+
+Cobertura Temporal
+------------------
+
+
+
+
+Cobertura Espacial
+------------------
+- b
+- r
+- a
+
+
+
+
+Tratamento
+----------
+Limpamos o Catálogo de Escolas do Inep e adicionamos a coluna id_municipio.
+
+
+
+

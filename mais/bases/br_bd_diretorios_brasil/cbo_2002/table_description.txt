@@ -1,0 +1,24 @@
+Diretório da Classificação Brasileira de Ocupações (CBO) 2002.
+
+
+Para saber mais acesse:
+Website: https://basedosdados.org/dataset/br-bd-diretorios-brasil
+Github: https://github.com/basedosdados/mais/tree/master/bases/br_bd_diretorios_brasil
+
+Ajude a manter o projeto :)
+Apoia-se: https://apoia.se/basedosdados
+
+Publicado por
+-------------
+Nome: Ricardo Dahis
+Código: https://github.com/basedosdados/mais/tree/master/bases/br_bd_diretorios_brasil/code
+
+
+
+
+
+
+
+
+
+

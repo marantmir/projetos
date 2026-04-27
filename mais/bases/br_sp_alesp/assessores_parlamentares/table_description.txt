@@ -1,0 +1,55 @@
+Lotação dos assessores parlamentares dos deputados
+
+
+Para saber mais acesse:
+Website: 
+Github: 
+
+Ajude a manter o projeto :)
+Apoia-se: https://apoia.se/basedosdados
+
+Publicado por
+-------------
+Nome: Diego Oliveira
+Código: 
+Website: github.com/d116626
+Email: ds.oliveira404@gmail.com
+Tratado por
+-----------
+Nome: Diego Oliveira
+Código: 
+Website: https://www.al.sp.gov.br/servidor/lista/?todos=true
+Email: ds.oliveira404@gmail.com
+
+
+
+Partições (Filtre a tabela por essas colunas para economizar dinheiro e tempo)
+---------
+
+
+
+
+Cobertura Temporal
+------------------
+- 2021
+
+
+
+
+Cobertura Espacial
+------------------
+- {'continent': 'south_america', 'country': 'br', 'admin1': 'id_uf_35'}
+
+
+
+
+Tratamento
+----------
+Padronização do nome das colunas, remoção de textos e logos, unificação das bases
+
+
+
+
+Frequencia de Atualização
+-------------------------
+one_year

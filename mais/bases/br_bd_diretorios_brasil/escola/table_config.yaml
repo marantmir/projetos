@@ -1,0 +1,345 @@
+
+dataset_id: br_bd_diretorios_brasil
+
+table_id: escola
+
+# Descreva a tabela. Essas são as primeiras frases que um usuário vai ver.
+# Você não precisa ser muito conciso. Sinta-se a vontade para dar exemplos de
+# como usar os dados.
+# Se souber, liste também aplicações: pesquisa, apps, etc. que usem os dados.,
+description: "Tabela contendo informações de escolas originais do Catálogo de Escolas do Inep."
+
+# A máxima unidade espacial que a tabela cobre.
+spatial_coverage: bra
+
+# Anos cobertos pela tabela.
+temporal_coverage:
+
+# A unidade temporal com qual a tabela é atualizada.
+update_frequency:
+
+# Entidade representada por cada linha.
+entity:
+    - school
+
+# A unidade temporal representada por cada linha.
+time_unit:
+
+# O conjunto mínimo de colunas identificando cada linha unicamente.
+# Preencha com os nomes de colunas. Ex: id_municipio, ano.
+# Pode ser vazio pois certas tabelas não possuem identificadores.
+identifying_columns:
+    - id_escola
+
+last_updated:
+    metadata:
+    data:
+    release:
+
+version: v1.2
+
+# Quem está preenchendo esses metadados?
+published_by:
+    name: Ricardo Dahis
+    email: rdahis@basedosdados.org
+    github_user: rdahis
+    ckan_user: rdahis
+    website: www.ricardodahis.com
+
+# Qual organização/departamento/pessoa tratou os dados?
+# As vezes há um ponto intermediário entre os dados originais e subir na Base dos Dados.
+# Se essa pessoa é você, preencha abaixo com suas informações.
+data_cleaned_by:
+    name: Ricardo Dahis
+    email: rdahis@basedosdados.org
+    github_user: rdahis
+    ckan_user: rdahis
+    website: www.ricardodahis.com
+    code_url:
+
+# Se houve passos de tratamento, limpeza e manipulação de dados, descreva-os aqui.
+data_cleaning_description: "Limpamos o Catálogo de Escolas do Inep e adicionamos a coluna id_municipio."
+
+# Url dos dados originais no GCP Storage.
+raw_files_url:
+
+# Url dos arquivos auxiliares no GCP Storage.
+auxiliary_files_url:
+
+# Url da tabela de arquitetura no GCP Storage.
+architecture_url:
+
+covered_by_dictionary: no
+
+source_bucket_name: basedosdados-dev
+
+project_id_prod: basedosdados-dev
+
+project_id_staging: basedosdados-dev
+
+# Liste as colunas da tabela que representam partições.
+# Não esqueça de deletar essas colunas nas tabelas .csv na hora de subir para o BigQuery.
+# Isso poupará muito tempo e dinheiro às pessoas utilizando essa tabela.
+# Se não houver partições, não modifique abaixo.
+partitions:
+
+bdm_file_size:
+
+# Quais são as colunas? Certifique-se de escrever uma boa descrição, as pessoas vão gostar
+# para saber sobre o que é a coluna.
+# Adicionar todas as colunas manualmente pode ser bastante cansativo, por isso, quando
+# inicializando este arquivo de configuração, você pode apontar a função para uma amostra de dados que
+# preencherá automaticamente as colunas.
+# Algumas colunas existirão apenas na tabela final, você as construirá em `publish.sql`.
+# Para esses, defina is_in_staging como False.
+# Além disso, você deve adicionar as colunas de partição aqui e definir is_partition como True.
+columns:
+    - name: id_escola
+      bigquery_type: string
+      description: ID Escola - Inep
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: nome
+      bigquery_type: string
+      description: Nome da Escola
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data:
+      is_in_staging: true
+      is_partition: false
+    - name: id_municipio
+      bigquery_type: string
+      description: ID Município - IBGE 7 Dígitos
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: municipio
+          column_name: id_municipio
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: sigla_uf
+      bigquery_type: string
+      description: Sigla da Unidade da Federação
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: uf
+          column_name: sigla_uf
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: restricao_atendimento
+      bigquery_type: string
+      description: Restrição de Atendimento
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: localizacao
+      bigquery_type: string
+      description: Localização
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: localidade_diferenciada
+      bigquery_type: string
+      description: Localidade Diferenciada
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: categoria_administrativa
+      bigquery_type: string
+      description: Categoria Administrativa
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: endereco
+      bigquery_type: string
+      description: Endereço
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: telefone
+      bigquery_type: string
+      description: Telefone
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: dependencia_administrativa
+      bigquery_type: string
+      description: Dependência Administrativa
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: categoria_privada
+      bigquery_type: string
+      description: Categoria Escola Privada
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: conveniada_poder_publico
+      bigquery_type: string
+      description: Conveniada Poder Público
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: regulacao_conselho_educacao
+      bigquery_type: string
+      description: Regulamentação pelo Conselho de Educação
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: porte
+      bigquery_type: string
+      description: Porte
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: etapas_modalidades_oferecidas
+      bigquery_type: string
+      description: Etapas e Modalidade de Ensino Oferecidas
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: outras_ofertas_educacionais
+      bigquery_type: string
+      description: Outras Ofertas Educacionais
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: latitude
+      bigquery_type: string
+      description: Latitude
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: longitude
+      bigquery_type: string
+      description: Longitude
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+
+metadata_modified: '2021-11-04T02:37:02.731153'

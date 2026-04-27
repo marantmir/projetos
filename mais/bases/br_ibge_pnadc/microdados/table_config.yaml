@@ -1,0 +1,5764 @@
+
+dataset_id: br_ibge_pnadc
+
+table_id: microdados
+
+# Descreva a tabela. Essas são as primeiras frases que um usuário vai ver.
+# Você não precisa ser muito conciso. Sinta-se a vontade para dar exemplos de
+# como usar os dados.
+# Se souber, liste também aplicações: pesquisa, apps, etc. que usem os dados.,
+description: Microdados da PNAD Contínua.
+
+# A máxima unidade espacial que a tabela cobre.
+spatial_coverage:
+    continent:
+        - south_america
+    country:
+        - bra
+    admin1:
+    admin2:
+
+# Anos cobertos pela tabela.
+# Preencher como lista de intervalos.
+# Exemplo: 1995(1)2019.
+temporal_coverage:
+    - 2012
+    - 2013
+    - 2014
+    - 2015
+    - 2016
+    - 2017
+    - 2018
+    - 2019
+    - 2020
+    - 2021
+
+# A unidade temporal com qual a tabela é atualizada.
+# Opções em 'https://basedosdados.org/api/3/action/bd_available_options'
+update_frequency: quarter
+
+# Entidade representada por cada linha.
+# Opções em 'https://basedosdados.org/api/3/action/bd_available_options'
+entity:
+    - person
+
+# A unidade temporal representada por cada linha.
+# Opções em 'https://basedosdados.org/api/3/action/bd_available_options'
+time_unit:
+
+# O conjunto mínimo de colunas identificando cada linha unicamente.
+# Preencha com os nomes de colunas.
+# Exemplos: id_municipio, ano.
+# Pode ser vazio pois certas tabelas não possuem identificadores.
+identifying_columns: []
+
+last_updated:
+    metadata:
+    data:
+    release:
+
+# Versão da tabela. Seguindo o padrão de semantic versioning.
+# Exemplo: v1.1.3
+version: v1.1
+
+# Quem está preenchendo esses metadados?
+published_by:
+    name: Ricardo Dahis
+    email: rdahis@basedosdados.org
+    github_user: rdahis
+    website: www.ricardodahis.com
+    ckan_user: rdahis
+
+# Qual organização/departamento/pessoa tratou os dados?
+# As vezes há um ponto intermediário entre os dados originais e subir na Base dos Dados.
+# Se essa pessoa é você, preencha abaixo com suas informações.
+data_cleaned_by:
+    name: Ricardo Dahis
+    email: rdahis@basedosdados.org
+    github_user: rdahis
+    ckan_user: rdahis
+    website: ''
+    code_url:
+
+# Se houve passos de tratamento, limpeza e manipulação de dados, descreva-os aqui.
+data_cleaning_description: "- Tratamento e compatibilização feitos pelo pacote \"\
+    PNADcIBGE\" no R (disponibilizado pelo IBGE).\n"
+
+# Url dos dados originais no GCP Storage.
+raw_files_url:
+
+# Url dos arquivos auxiliares no GCP Storage.
+auxiliary_files_url: https://storage.googleapis.com/basedosdados/auxiliary_files/br_ibge_pnadc.zip
+
+# Url da tabela de arquitetura no GCP Storage.
+architecture_url:
+
+# A tabela tem colunas que precisam de dicionário?
+# Opções: yes, no.
+covered_by_dictionary:
+
+source_bucket_name: basedosdados-dev
+
+project_id_prod: basedosdados-dev
+
+project_id_staging: basedosdados-dev
+
+# Liste as colunas da tabela que representam partições.
+# Não esqueça de deletar essas colunas nas tabelas .csv na hora de subir para o BigQuery.
+# Isso poupará muito tempo e dinheiro às pessoas utilizando essa tabela.
+# Se não houver partições, não modifique abaixo.
+partitions: ano, trimestre, sigla_uf
+
+bdm_file_size:
+
+# Quais são as colunas? Certifique-se de escrever uma boa descrição, as pessoas vão gostar
+# para saber sobre o que é a coluna.
+# Adicionar todas as colunas manualmente pode ser bastante cansativo, por isso, quando
+# inicializando este arquivo de configuração, você pode apontar a função para uma amostra de dados que
+# preencherá automaticamente as colunas.
+# Algumas colunas existirão apenas na tabela final, você as construirá em `publish.sql`.
+# Para esses, defina is_in_staging como False.
+# Além disso, você deve adicionar as colunas de partição aqui e definir is_partition como True.
+columns:
+    - name: ano
+      bigquery_type: int64
+      description: Ano
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_data_tempo
+          table_id: ano
+          column_name: ano
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: true
+    - name: trimestre
+      bigquery_type: int64
+      description: Trimestre
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_data_tempo
+          table_id: trimestre
+          column_name: trimestre
+      measurement_unit: quarter
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: true
+    - name: id_uf
+      bigquery_type: string
+      description: ID Unidade da Federação
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: uf
+          column_name: id_uf
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: sigla_uf
+      bigquery_type: string
+      description: Sigla da Unidade da Federação
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: uf
+          column_name: sigla
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: true
+    - name: capital
+      bigquery_type: string
+      description: Município da Capital
+      temporal_coverage:
+      covered_by_dictionary: yes
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: rm_ride
+      bigquery_type: string
+      description: Região Metropolitana e Região Administrativa Integrada
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: id_upa
+      bigquery_type: string
+      description: ID Unidade Primária de Amostragem (UPA)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: id_estrato
+      bigquery_type: string
+      description: ID Estrato (As 2 primeiras posições representam o código da Unidade
+          da Federação)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: id_domicilio
+      bigquery_type: string
+      description: ID Domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1008
+      bigquery_type: string
+      description: Número de seleção do domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1014
+      bigquery_type: string
+      description: Painel
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1016
+      bigquery_type: string
+      description: Número da entrevista no domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1022
+      bigquery_type: string
+      description: Situação do domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1023
+      bigquery_type: string
+      description: Tipo de área
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1027
+      bigquery_type: float64
+      description: Peso do domicílio e das pessoas (Peso trimestral com correção de
+          não entrevista sem pós estratificação pela projeção de população)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028
+      bigquery_type: float64
+      description: Peso do domicílio e das pessoas (Peso trimestral com correção de
+          não entrevista com pós estratificação pela projeção de população)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1029
+      bigquery_type: int64
+      description: Projeção da população por níveis geográficos
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1033
+      bigquery_type: int64
+      description: Projeção da população por sexo e idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: posest
+      bigquery_type: string
+      description: Domínios de projeção (As 2 primeiras posições representam o código
+          da Unidade da Federação e a última, o tipo de área. UF(2) + V1023(1))
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: posest_sxi
+      bigquery_type: string
+      description: Domínios de projeção (As 2 primeiras posições representam o código
+          da Unidade da Federação e a última, o tipo de área. UF(2) + V1023(1))
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2001
+      bigquery_type: int64
+      description: Número de pessoas no domicílio
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2003
+      bigquery_type: int64
+      description: Número de ordem
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2005
+      bigquery_type: string
+      description: Condição no domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2007
+      bigquery_type: string
+      description: Sexo
+      temporal_coverage:
+      covered_by_dictionary: yes
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2008
+      bigquery_type: int64
+      description: Dia de nascimento
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_data_tempo
+          table_id: dia
+          column_name: dia
+      measurement_unit: day
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V20081
+      bigquery_type: int64
+      description: Mês de nascimento
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_data_tempo
+          table_id: mes
+          column_name: mes
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V20082
+      bigquery_type: int64
+      description: Ano de nascimento
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_data_tempo
+          table_id: ano
+          column_name: ano
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2009
+      bigquery_type: int64
+      description: Idade do morador na data de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V2010
+      bigquery_type: string
+      description: Cor ou raça
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3001
+      bigquery_type: string
+      description: '... sabe ler e escrever?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3002
+      bigquery_type: string
+      description: '... frequenta escola?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3002A
+      bigquery_type: string
+      description: A escola que ... frequenta é de
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3003
+      bigquery_type: string
+      description: Qual é o curso que ... frequenta?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3003A
+      bigquery_type: string
+      description: Qual é o curso que ... frequenta?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3004
+      bigquery_type: string
+      description: A duração deste curso que ... frequenta é de
+      temporal_coverage: #2017(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3005
+      bigquery_type: string
+      description: Este curso que ... frequenta é seriado?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3005A
+      bigquery_type: string
+      description: Esse curso que .... frequenta é organizado em
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3006
+      bigquery_type: string
+      description: Qual é o ano/série/semestre que ... frequenta?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3006A
+      bigquery_type: string
+      description: Qual é a etapa do ensino fundamental que ... frequenta?
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3007
+      bigquery_type: string
+      description: '... já concluiu algum outro curso de graduação?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3008
+      bigquery_type: string
+      description: Anteriormente ... frequentou escola?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3009
+      bigquery_type: string
+      description: Qual foi o curso mais elevado que ... frequentou anteriormente?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3009A
+      bigquery_type: string
+      description: Qual foi o curso mais elevado que ... frequentou anteriormente?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3010
+      bigquery_type: string
+      description: A duração deste curso que ... frequentou anteriormente era de
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3011
+      bigquery_type: string
+      description: Este curso que ... frequentou anteriormente era seriado?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3011A
+      bigquery_type: string
+      description: Esse curso que .... frequentou era organizado em
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3012
+      bigquery_type: string
+      description: '... Concluiu com aprovação, pelo menos a primeira série deste
+          curso que frequentou anteriormente?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3013
+      bigquery_type: string
+      description: Qual foi o último ano/série/semestre que ... concluiu com aprovação,
+          neste curso que frequentou anteriormente?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3013A
+      bigquery_type: string
+      description: Qual foi a etapa de ensino fundamental que ... frequentou?
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3013B
+      bigquery_type: string
+      description: '... Concluiu os anos iniciais deste curso que frequentou anteriormente?'
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V3014
+      bigquery_type: string
+      description: '... Concluiu este curso que frequentou anteriormente?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4001
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... trabalhou ou
+          estagiou, durante pelo menos 1 hora, em alguma atividade remunerada em dinheiro?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4002
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... trabalhou ou
+          estagiou, durante pelo menos 1 hora, em alguma atividade remunerada em produtos,
+          mercadorias, moradia, alimentação, etc.?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4003
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... fez algum bico
+          ou trabalhou em alguma atividade ocasional remunerada durante pelo menos
+          1 hora?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4004
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... ajudou durante
+          pelo menos 1 hora, sem receber pagamento, no trabalho remunerado de algum
+          morador do domicílio ou de parente?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4005
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... tinha algum
+          trabalho remunerado do qual estava temporariamente afastado?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4006
+      bigquery_type: string
+      description: Na semana de ... a .... (semana de referência), por que motivo
+          ... estava afastado desse trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4006A
+      bigquery_type: string
+      description: Na semana de ... a .... (semana de referência), por que motivo
+          ... estava afastado desse trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4007
+      bigquery_type: string
+      description: Durante o tempo de afastamento, ... continuou a receber ao menos
+          uma parte do pagamento?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4008
+      bigquery_type: string
+      description: Em .../.../...(último dia da semana de referência), fazia quanto
+          tempo que ... estava afastado desse trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40081
+      bigquery_type: int64
+      description: Tempo que estava afastado (De 1 mês a menos de 1 ano)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40082
+      bigquery_type: int64
+      description: Tempo que estava afastado (De 1 ano a menos de 2 anos)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40083
+      bigquery_type: int64
+      description: Tempo que estava afastado (de 02 anos a 98 anos)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4009
+      bigquery_type: string
+      description: Quantos trabalhos ... tinha na semana de ... a ... (semana de referência?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4010
+      bigquery_type: string
+      description: Código da ocupação (cargo ou função)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: cbo_2002
+          column_name: cbo_2002
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4012
+      bigquery_type: string
+      description: Nesse trabalho, ... era
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40121
+      bigquery_type: string
+      description: Trabalhador não remunerado
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4013
+      bigquery_type: string
+      description: Código da principal atividade desse negócio/empresa
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: cnae_2
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40132
+      bigquery_type: string
+      description: Qual a seção da atividade?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40132A
+      bigquery_type: string
+      description: Qual a seção da atividade?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4014
+      bigquery_type: string
+      description: Esse trabalho era na área
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4015
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... teve ajuda,
+          nesse trabalho, de pelo menos um trabalhador não remunerado que era membro
+          do domicílio ou parente?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40151
+      bigquery_type: string
+      description: Quantos trabalhadores não remunerados?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V401511
+      bigquery_type: int64
+      description: 1 a 5 trabalhadores não remunerados
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V401512
+      bigquery_type: int64
+      description: 6 a 10 trabalhadores não remunerados
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4016
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), quantos empregados
+          trabalhavam nesse negócio/empresa que ... tinha?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40161
+      bigquery_type: int64
+      description: 1 a 5 empregados
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40162
+      bigquery_type: int64
+      description: 6 a 10 empregados
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40163
+      bigquery_type: int64
+      description: 11 a 50 empregados
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4017
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de  referência), ... tinha pelo
+          menos um sócio que trabalhava nesse negócio/empresa?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40171
+      bigquery_type: string
+      description: Quantos?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V401711
+      bigquery_type: int64
+      description: 1 a 5 sócios
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4018
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), contando com ...
+          , quantas pessoas trabalhavam nesse negócio/empresa?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40181
+      bigquery_type: int64
+      description: 1 a 5 pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40182
+      bigquery_type: int64
+      description: 6 a 10 pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40183
+      bigquery_type: int64
+      description: 11 a 50 pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4019
+      bigquery_type: string
+      description: Esse negócio/empresa era registrado no Cadastro Nacional da Pessoa
+          Jurídica - CNPJ?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4020
+      bigquery_type: string
+      description: Em que tipo de local funcionava esse negócio/empresa?
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4021
+      bigquery_type: string
+      description: '... exercia normalmente o trabalho em estabelecimento desse negócio/empresa?'
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4022
+      bigquery_type: string
+      description: Então onde ... exercia normalmente esse trabalho?
+      temporal_coverage: #2018(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4024
+      bigquery_type: string
+      description: No período de ... a ... (período de referência de 30 dias) ...
+          prestava serviço doméstico em mais de um domicílio?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4025
+      bigquery_type: string
+      description: Nesse trabalho, ... era contratado(a) como empregado temporário?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4026
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência), ... era contratado(a)
+          somente por pessoa responsável pelo negócio/empresa em que trabalhava?
+      temporal_coverage: #2017(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4027
+      bigquery_type: string
+      description: Na semana de ... a ... (semana de referência) era contratado(a)
+          somente por intermediário (empresa empreiteira, empreiteiro, "gato", etc.)?
+      temporal_coverage: #2017(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4028
+      bigquery_type: string
+      description: Nesse trabalho, ... era servidor público estatutário (federal,
+          estadual ou municipal)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4029
+      bigquery_type: string
+      description: Nesse trabalho, ... tinha carteira de trabalho assinada?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4032
+      bigquery_type: string
+      description: Era contribuinte de instituto de previdência por esse trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4033
+      bigquery_type: string
+      description: Qual era o rendimento bruto mensal que ... recebia/fazia normalmente
+          nesse trabalho? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40331
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho rendimento/retirada em
+          dinheiro?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403311
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403312
+      bigquery_type: float64
+      description: Qual era o rendimento bruto/retirada mensal que ... recebia/fazia
+          normalmente nesse trabalho? (valor em dinheiro)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40332
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho rendimento/retirada em
+          produtos e mercadorias?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403321
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403322
+      bigquery_type: float64
+      description: Qual era o rendimento bruto/retirada mensal que ... recebia/fazia
+          normalmente nesse trabalho ? (valor estimado dos produtos ou mercadorias)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40333
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho rendimento/retirada somente
+          em benefícios?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403331
+      bigquery_type: string
+      description: Tipo de rendimento/retirada em benefícios que recebia/fazia nesse
+          trabalho
+      temporal_coverage: #2016(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4034
+      bigquery_type: string
+      description: Qual foi o rendimento bruto que ... recebeu/fez nesse trabalho,
+          no mês de referência? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40341
+      bigquery_type: string
+      description: Recebeu/fez nesse trabalho rendimento/retirada em dinheiro no mês
+          de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403411
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403412
+      bigquery_type: float64
+      description: Qual foi o rendimento bruto/retirada que ... recebeu/fez nesse
+          trabalho, no mês de referência? (valor em dinheiro)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40342
+      bigquery_type: string
+      description: Recebeu/fez nesse trabalho no mês de referencia, rendimento/retirada
+          em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403421
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V403422
+      bigquery_type: float64
+      description: Qual foi o rendimento bruto/retirada que ... recebeu/fez nesse
+          trabalho, no mês de referência? (valor estimado dos produtos ou mercadorias)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4039
+      bigquery_type: int64
+      description: Quantas horas ... trabalhava normalmente, por semana, nesse trabalho
+          principal?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4039C
+      bigquery_type: int64
+      description: Quantas horas ... trabalhou efetivamente na semana de referência
+          nesse trabalho pincipal?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4040
+      bigquery_type: string
+      description: Até o dia ... (último dia da semana de referência) fazia quanto
+          tempo que ... estava nesse trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40401
+      bigquery_type: int64
+      description: Fazia quanto tempo que estava nesse trabalho (de 1 mês a menos
+          de 1 ano)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40402
+      bigquery_type: int64
+      description: Fazia quanto tempo que estava nesse trabalho (de 1 ano a menos
+          de 2 anos)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40403
+      bigquery_type: int64
+      description: Fazia quanto tempo estava nesse trabalho (2 anos ou mais)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4041
+      bigquery_type: string
+      description: Código da ocupação (cargo ou função)
+      temporal_coverage:
+      covered_by_dictionary: no
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: cbo_2002
+          column_name: cbo_2002
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4043
+      bigquery_type: string
+      description: Nesse trabalho secundário, ... era
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40431
+      bigquery_type: string
+      description: Trabalhador familiar não remunerado
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4044
+      bigquery_type: string
+      description: Código da principal atividade desse negócio/empresa
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id: br_bd_diretorios_brasil
+          table_id: cnae_2
+          column_name: cnae_2
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4045
+      bigquery_type: string
+      description: Esse trabalho era na área
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4046
+      bigquery_type: string
+      description: Esse negócio/empresa era registrado no Cadastro Nacional da Pessoa
+          Jurídica - CNPJ?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4047
+      bigquery_type: string
+      description: Nesse trabalho secundário era funcionário público estatutário (federal,
+          estadual ou municipal)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4048
+      bigquery_type: string
+      description: Nesse trabalho secundário tinha carteira de trabalho assinada?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4049
+      bigquery_type: string
+      description: Era contribuinte de instituto de previdência por esse trabalho
+          secundário?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4050
+      bigquery_type: string
+      description: Qual era o rendimento bruto mensal que ... recebia/fazia normalmente
+          nesse trabalho secundário? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40501
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho secundário rendimento/retirada
+          em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405011
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405012
+      bigquery_type: float64
+      description: Valor em dinheiro do rendimento mensal que recebia normalmente
+          nesse trabalho secundário
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40502
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho secundário rendimento/retirada
+          em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405021
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405022
+      bigquery_type: float64
+      description: Valor estimado dos produtos e mercadorias que recebia normalmente
+          nesse trabalho secundário
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40503
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse trabalho secundário rendimento/retirada
+          somente em benefícios
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405031
+      bigquery_type: string
+      description: Tipo de rendimento/retirada em benefícios que recebia/fazia nesse
+          trabalho secundário
+      temporal_coverage: #2016(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4051
+      bigquery_type: string
+      description: Qual foi o rendimento bruto que ... recebeu/fez nesse trabalho
+          secundário, no mês de referência? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40511
+      bigquery_type: string
+      description: Recebeu/fez nesse trabalho secundário rendimento/retirada em dinheiro
+          no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405111
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405112
+      bigquery_type: float64
+      description: Valor em dinheiro do rendimento mensal que recebeu nesse trabalho
+          secundário no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40512
+      bigquery_type: string
+      description: Recebeu/fez nesse trabalho secundário no mês de referencia, rendimento/retirada
+          em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405121
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405122
+      bigquery_type: float64
+      description: Valor estimado dos produtos e mercadorias que recebia recebeu nesse
+          trabalho secundário no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4056
+      bigquery_type: int64
+      description: Quantas horas ... trabalhava normalmente, por semana, nesse trabalho
+          secundário?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4056C
+      bigquery_type: int64
+      description: Quantas horas ... trabalhou efetivamente na semana de referência
+          nesse trabalho secundário?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4057
+      bigquery_type: string
+      description: Era contribuinte de instituto de previdência por esse(s) outro(s)
+          trabalho(s)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4058
+      bigquery_type: string
+      description: Qual era o rendimento bruto mensal que ... recebia/fazia  normalmente
+          nesse(s) outro(s) trabalho(s)? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40581
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse(s) outro(s) trabalho(s) rendimento/retirada
+          em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405811
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405812
+      bigquery_type: float64
+      description: Valor em dinheiro do rendimento mensal que recebia normalmente
+          nesse(s) outro(s) trabalho(s)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40582
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse(s) outro(s) trabalho(s) rendimento/retirada
+          em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405821
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405822
+      bigquery_type: float64
+      description: Valor estimado do produtos e mercadorias que recebia normalmente
+          nesse(s) outro(s) trabalho(s)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40583
+      bigquery_type: string
+      description: Recebia/fazia normalmente nesse(s) outro(s) trabalho(s) rendimento/retirada
+          somente em benefícios
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405831
+      bigquery_type: string
+      description: Tipo de rendimento/retirada em benefícios que recebia/fazia nesse(s)
+          outro(s) trabalho(s)
+      temporal_coverage: #2016(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40584
+      bigquery_type: string
+      description: Não remunerado nesse(s) outro(s) trabalho(s)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4059
+      bigquery_type: string
+      description: Qual foi o rendimento bruto que ... recebeu/fez nesse(s) outro(s)
+          trabalho(s), no mês de referência? (variável auxiliar)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40591
+      bigquery_type: string
+      description: Recebeu/fez nesse(s) outro(s) trabalho(s) rendimento/retirada em
+          dinheiro no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405911
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em dinheiro
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405912
+      bigquery_type: float64
+      description: Valor em dinheiro do rendimento mensal que recebeu nesse(s) outro(s)
+          trabalho(s) no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40592
+      bigquery_type: string
+      description: Recebeu/fez nesse(s) outro(s) trabalhos no mês de referencia, rendimento/retirada
+          em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405921
+      bigquery_type: string
+      description: Número da faixa do rendimento/retirada em produtos e mercadorias
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V405922
+      bigquery_type: float64
+      description: Valor estimado do produtos e mercadorias que recebia normalmente
+          nesse(s) outro(s) trabalho(s) no mês de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: brl
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4062
+      bigquery_type: int64
+      description: Quantas horas ... trabalhava normalmente, por semana, nesse(s)
+          outro(s) trabalho(s)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4062C
+      bigquery_type: int64
+      description: Quantas horas ... trabalhou efetivamente na semana de referência
+          nesses outros trabalhos?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4063
+      bigquery_type: string
+      description: '... gostaria de trabalhar mais horas do que as ... (soma das horas
+          declaradas nas variáveis VD4031, VD4032, VD4033) horas que efetivamente
+          trabalhou no(s) trabalho(s) que tinha na semana de referência?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4063A
+      bigquery_type: string
+      description: '... gostaria de trabalhar mais horas do que as ... (soma das horas
+          declaradas nos quesitos 39, 56 e 62) horas que normalmente trabalhava no(s)
+          trabalho(s) que tinha na semana de referência?'
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4064
+      bigquery_type: string
+      description: No mês de referência, ... estaria disponível para trabalhar mais
+          do que as (soma das horas declaradas nas variáveis VD4031, VD4032, VD4033)
+          horas que efetivamente trabalhou no(s) trabalho(s) que tinha na semana de
+          referência?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4064A
+      bigquery_type: string
+      description: No mês de referência, ... estaria disponível para trabalhar mais
+          do que as (soma das horas declaradas nos quesitos 39, 56 e 62) horas que
+          normalmente trabalhava no(s) trabalho(s) que tinha na semana de referência?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4071
+      bigquery_type: string
+      description: No período de ... a ... (período de referência de 30 dias), ...
+          Tomou alguma providência para conseguir trabalho, seja um emprego ou um
+          negócio próprio?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4072
+      bigquery_type: string
+      description: No período de ... a ... (período de referência de 30 dias), qual
+          foi a principal providência que ... tomou para conseguir trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4072A
+      bigquery_type: string
+      description: No período de ... a ... (período de referência de 30 dias), qual
+          foi a principal providência que ... tomou para conseguir trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4073
+      bigquery_type: string
+      description: Embora não tenha tomado providência para conseguir trabalho, gostaria
+          de ter trabalhado na semana de ... a ... (semana de referência)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4074
+      bigquery_type: string
+      description: Qual foi o principal motivo de ... não ter tomado providência para
+          conseguir trabalho no período de ... a ... (período de referência de 30
+          dias)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4074A
+      bigquery_type: string
+      description: Qual foi o principal motivo de ... não ter tomado providência para
+          conseguir trabalho no período de ... a ... (período de referência de 30
+          dias)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4075A
+      bigquery_type: string
+      description: Quanto tempo depois de ... (último dia da semana de referência)
+          irá começar esse trabalho que conseguiu?
+      temporal_coverage: #2016(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4075A1
+      bigquery_type: int64
+      description: Número de meses para começar o trabalho que conseguiu
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4076
+      bigquery_type: string
+      description: Até o dia ... (último dia da semana de referência), fazia quanto
+          tempo que ... estava sem qualquer trabalho e tentando conseguir trabalho?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40761
+      bigquery_type: int64
+      description: fazia quanto tempo que vinha procurando trabalho (de 1 mês a menos
+          de 1 ano)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40762
+      bigquery_type: int64
+      description: fazia quanto tempo que vinha procurando trabalho (de 1 ano a menos
+          de 2 anos)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: month
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V40763
+      bigquery_type: int64
+      description: fazia quanto tempo vinha procurando trabalho (2 anos ou mais)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4077
+      bigquery_type: string
+      description: Se tivesse conseguido um trabalho, ... poderia ter começado a trabalhar
+          na semana de ... a ... (semana de referência)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4078
+      bigquery_type: string
+      description: Qual foi o principal motivo para ... não querer(poder começar a)
+          trabalhar na semana de  ... a ... (semana de referência)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4078A
+      bigquery_type: string
+      description: Qual foi o principal motivo para ... não querer(poder começar a)
+          trabalhar na semana de ... a ... (semana de referência)?
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V4082
+      bigquery_type: string
+      description: No período de captação de 358 dias, ... trabalhou por pelo menos
+          1 hora?
+      temporal_coverage: #2016(1)
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD2002
+      bigquery_type: string
+      description: Condição no domicílio
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD2003
+      bigquery_type: int64
+      description: Número de componentes do domicílio (exclusive as pessoas cuja condição
+          no domicílio era pensionista, empregado doméstico ou parente do empregado
+          doméstico)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: person
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD2004
+      bigquery_type: string
+      description: Espécie da unidade doméstica
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD3004
+      bigquery_type: string
+      description: Nível de instrução mais elevado alcançado (pessoas de 5 anos ou
+          mais de idade) padronizado para o Ensino fundamental - SISTEMA DE 9 ANOS
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD3005
+      bigquery_type: int64
+      description: Anos de estudo (pessoas de 5 anos ou mais de idade) padronizado
+          para o Ensino fundamental - SISTEMA DE 9 ANOS
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: year
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD3006
+      bigquery_type: string
+      description: Grupos de anos de estudo (pessoas de 5 anos ou mais de idade) padronizado
+          para o Ensino fundamental - SISTEMA DE 9 ANOS
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4001
+      bigquery_type: string
+      description: Condição em relação à força de trabalho na semana de referência
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4002
+      bigquery_type: string
+      description: Condição de ocupação na semana de referência para pessoas de 14
+          anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4003
+      bigquery_type: string
+      description: Força de trabalho potencial para pessoas de 14 anos ou mais de
+          idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4004
+      bigquery_type: string
+      description: Subocupação por insuficiência de horas efetivamente trabalhadas
+          em todos os trabalhos
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4004A
+      bigquery_type: string
+      description: Subocupação por insuficiência de horas habitualmente trabalhadas
+          em todos os trabalhos
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4005
+      bigquery_type: string
+      description: Pessoas desalentadas na semana de referência
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4007
+      bigquery_type: string
+      description: Posição na ocupação no trabalho principal da semana de referência
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4008
+      bigquery_type: string
+      description: Posição na ocupação no trabalho principal da semana de referência
+          para pessoas de 14 anos ou mais de idade (com subcategorias de empregados)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4009
+      bigquery_type: string
+      description: Posição na ocupação e categoria do emprego do trabalho principal
+          da semana de referência para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4010
+      bigquery_type: string
+      description: Grupamentos de atividade principal do empreendimento do trabalho
+          principal da semana de referência para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4011
+      bigquery_type: string
+      description: Grupamentos ocupacionais do trabalho principal da semana de referência
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4012
+      bigquery_type: string
+      description: Contribuição para instituto de previdência em qualquer trabalho
+          da semana de referência para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4013
+      bigquery_type: string
+      description: Faixa das horas habitualmente trabalhadas por semana em todos os
+          trabalhos para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4014
+      bigquery_type: string
+      description: Faixa das horas efetivamente trabalhadas na semana de referência
+          em todos os trabalhos para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4015
+      bigquery_type: string
+      description: Tipo de remuneração habitualmente recebida no trabalho principal
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4016
+      bigquery_type: float64
+      description: Rendimento mensal habitual do trabalho principal para pessoas de
+          14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro,
+          produtos ou mercadorias no trabalho principal)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4017
+      bigquery_type: float64
+      description: Rendimento mensal efetivo do trabalho principal para pessoas de
+          14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro,
+          produtos ou mercadorias no trabalho principal)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4018
+      bigquery_type: string
+      description: Tipo de remuneração habitualmente recebida em todos os trabalhos
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4019
+      bigquery_type: float64
+      description: Rendimento mensal habitual de todos os trabalhos para pessoas de
+          14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro,
+          produtos ou mercadorias em qualquer trabalho)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4020
+      bigquery_type: float64
+      description: Rendimento mensal efetivo de todos os trabalhos para pessoas de
+          14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro,
+          produtos ou mercadorias em qualquer trabalho)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4023
+      bigquery_type: string
+      description: Motivo pelo qual não procurou trabalho ou não gostaria de ter trabalhado
+          ou não estava disponível para iniciar um trabalho
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4030
+      bigquery_type: string
+      description: Motivo pelo qual não procurou trabalho ou não gostaria de ter trabalhado
+          ou não estava disponível para iniciar um trabalho
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4031
+      bigquery_type: int64
+      description: Horas habitualmente trabalhadas por semana em todos os trabalhos
+          para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4032
+      bigquery_type: int64
+      description: Horas efetivamente trabalhadas na semana de referência no trabalho
+          principal para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4033
+      bigquery_type: int64
+      description: Horas efetivamente trabalhadas na semana de referência no trabalho
+          secundário para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4034
+      bigquery_type: int64
+      description: Horas efetivamente trabalhadas na semana de referência nos outros
+          trabalhos para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4035
+      bigquery_type: int64
+      description: Horas efetivamente trabalhadas na semana de referência em todos
+          os trabalhos para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit: hour
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4036
+      bigquery_type: string
+      description: Faixa das horas habitualmente trabalhadas por semana no trabalho
+          principal para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: VD4037
+      bigquery_type: string
+      description: Faixa das horas efetivamente trabalhadas na semana de referência
+          no trabalho principal para pessoas de 14 anos ou mais de idade
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028001
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028002
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028003
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028004
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028005
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028006
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028007
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028008
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028009
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028010
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028011
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028012
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028013
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028014
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028015
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028016
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028017
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028018
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028019
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028020
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028021
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028022
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028023
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028024
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028025
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028026
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028027
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028028
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028029
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028030
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028031
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028032
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028033
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028034
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028035
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028036
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028037
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028038
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028039
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028040
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028041
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028042
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028043
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028044
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028045
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028046
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028047
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028048
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028049
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028050
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028051
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028052
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028053
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028054
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028055
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028056
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028057
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028058
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028059
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028060
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028061
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028062
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028063
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028064
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028065
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028066
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028067
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028068
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028069
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028070
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028071
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028072
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028073
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028074
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028075
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028076
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028077
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028078
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028079
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028080
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028081
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028082
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028083
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028084
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028085
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028086
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028087
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028088
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028089
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028090
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028091
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028092
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028093
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028094
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028095
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028096
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028097
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028098
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028099
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028100
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028101
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028102
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028103
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028104
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028105
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028106
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028107
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028108
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028109
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028110
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028111
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028112
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028113
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028114
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028115
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028116
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028117
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028118
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028119
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028120
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028121
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028122
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028123
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028124
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028125
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028126
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028127
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028128
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028129
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028130
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028131
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028132
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028133
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028134
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028135
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028136
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028137
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028138
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028139
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028140
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028141
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028142
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028143
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028144
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028145
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028146
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028147
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028148
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028149
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028150
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028151
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028152
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028153
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028154
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028155
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028156
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028157
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028158
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028159
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028160
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028161
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028162
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028163
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028164
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028165
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028166
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028167
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028168
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028169
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028170
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028171
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028172
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028173
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028174
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028175
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028176
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028177
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028178
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028179
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028180
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028181
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028182
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028183
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028184
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028185
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028186
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028187
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028188
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028189
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028190
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028191
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028192
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028193
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028194
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028195
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028196
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028197
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028198
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028199
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: V1028200
+      bigquery_type: float64
+      description: Peso replicado do domicílio e das pessoas
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: habitual
+      bigquery_type: float64
+      description: Habitual (campo derivado)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+    - name: efetivo
+      bigquery_type: float64
+      description: Efetivo (campo derivado)
+      temporal_coverage:
+      covered_by_dictionary:
+      directory_column:
+          dataset_id:
+          table_id:
+          column_name:
+      measurement_unit:
+      has_sensitive_data: no
+      is_in_staging: true
+      is_partition: false
+
+metadata_modified: '2021-12-15T12:18:07.596489'

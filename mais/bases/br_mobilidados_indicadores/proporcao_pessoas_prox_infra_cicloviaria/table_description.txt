@@ -1,0 +1,52 @@
+Percentual de população residente em até 300 metros da infraestrutura cicloviária (ciclovias, ciclofaixas e ciclorrotas).
+
+
+Para saber mais acesse:
+Website: https://basedosdados.org/dataset/br-mobilidados-indicadores
+Github: https://github.com/basedosdados/mais/tree/master/bases/br_mobilidados_indicadores
+
+Ajude a manter o projeto :)
+Apoia-se: https://apoia.se/basedosdados
+
+Publicado por
+-------------
+Nome: Crislane A. Souza
+Código: https://github.com/basedosdados/mais/tree/master/bases/br_mobilidados_indicadores/code
+Website: https://github.com/crislanealves
+Email: crislanealves@basedosdados.orgTratado por
+-----------
+Nome: Crislane A. Souza
+Código: https://github.com/basedosdados/mais/tree/master/bases/br_mobilidados_indicadores/code
+Website: https://github.com/crislanealves
+Email: crislanealves@basedosdados.org
+
+Nível da Observação (i.e. a granularidade da linha)
+-------------------
+- municipio
+- ano
+- indicador
+
+Colunas identificando linhas unicamente
+-------------------
+- id_municipio
+- indicador
+
+Cobertura Temporal
+------------------
+- 2019
+- 2021
+
+Cobertura Espacial
+------------------
+- brasil
+
+Tratamento
+----------
+- Proporção 0-100; e,
+- Altero o formato de wide para long.
+
+Frequencia de Atualização
+-------------------------
+recorrente
+
+
