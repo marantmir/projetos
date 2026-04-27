@@ -1,0 +1,1 @@
+# envio para BigQuery
