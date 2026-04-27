@@ -1,0 +1,104 @@
+site_name: Starlight Search
+site_url: https://starlight-search.com
+repo_url: https://github.com/StarlightSearch/EmbedAnything
+repo_name: StarlightSearch/EmbedAnything
+
+theme:
+  name: "material"
+  logo: "assets/128x128.png"
+  favicon: "assets/icon.ico"
+  icon:
+    repo: fontawesome/brands/github
+
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.sections
+    - content.code.annotate
+    - toc.follow
+    - header.autohide
+    - announce.dismiss
+
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+        
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+        
+plugins:
+  - mkdocstrings
+  - search
+  - blog:
+      archive: false
+
+nav:
+- index.md
+- references.md
+- Blog: 
+  - blog/index.md
+- Guides:
+  - guides/colpali.md
+  - guides/images.md
+  - guides/semantic.md
+  - guides/adapters.md
+  - guides/onnx_models.md
+  - guides/ocr.md
+  - guides/actix_server.md
+- Contribution:
+  - roadmap/roadmap.md
+  - roadmap/contribution.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra:
+  analytics: 
+    provider: google
+    property: G-25WL8Y1K9Y
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/SearchStarlight
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/mystarlight/
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/5wX6c4R7zp
+    - icon: fontawesome/solid/envelope
+      link: https://starlight-3.kit.com/f15e780cc7
+
+copyright: Copyright &copy; 2024 Starlight Search
