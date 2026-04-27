@@ -1,0 +1,17 @@
+{
+  "num_features": [
+    "Ano",
+    "Quilometragem",
+    "Portas"
+  ],
+  "cat_features": [
+    "Marca",
+    "Modelo",
+    "Cor",
+    "Cambio",
+    "Combustivel"
+  ],
+  "ano_min": 2000,
+  "ano_max": 2023,
+  "km_max": 199994
+}

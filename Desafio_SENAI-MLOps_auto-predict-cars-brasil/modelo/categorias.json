@@ -1,0 +1,65 @@
+{
+  "Marca": [
+    "Chevrolet",
+    "Fiat",
+    "Ford",
+    "Honda",
+    "Hyundai",
+    "Jeep",
+    "Nissan",
+    "Renault",
+    "Toyota",
+    "Volkswagen"
+  ],
+  "Modelo": [
+    "Argo",
+    "Civic",
+    "Compass",
+    "Corolla",
+    "Creta",
+    "Cronos",
+    "Duster",
+    "EcoSport",
+    "Fit",
+    "Frontier",
+    "Gol",
+    "HB20",
+    "HB20S",
+    "HR-V",
+    "Hilux",
+    "Ka",
+    "Kicks",
+    "Kwid",
+    "Mobi",
+    "Onix",
+    "Onix Plus",
+    "Polo",
+    "Ranger",
+    "Renegade",
+    "S10",
+    "Sandero",
+    "T-Cross",
+    "Toro",
+    "Tracker",
+    "Versa",
+    "Virtus",
+    "Yaris"
+  ],
+  "Cor": [
+    "Azul",
+    "Branco",
+    "Cinza",
+    "Prata",
+    "Preto",
+    "Vermelho"
+  ],
+  "Cambio": [
+    "Automático",
+    "Manual"
+  ],
+  "Combustivel": [
+    "Diesel",
+    "Flex",
+    "Gasolina"
+  ]
+}
