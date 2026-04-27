@@ -1,0 +1,21 @@
+Variáveis Pessoais
+Idade – idade do estudante.
+Curso_Tecnico – se possui curso técnico (Sim/Não).
+Anos_Para_Formar – tempo estimado de conclusão da graduação.
+
+
+Preferências (nível de interesse de 1 a 5)
+Gosta_Matematica
+Gosta_Programacao
+Gosta_Biologia
+Gosta_Fisica
+Gosta_Quimica
+Gosta_Arte_Design
+Gosta_Comunicacao
+Gosta_Negocios
+Gosta_Historia
+Gosta_Geografia
+
+
+Classe Alvo
+Graduacao_Indicada

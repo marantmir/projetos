@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatorio de Treinamento de Modelos</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #52606d;
+      --accent: #0b7285;
+      --border: #d9e2ec;
+      --table-head: #e6f4f1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0b7285, #1f4e79);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 1rem;
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    h2, h3 {
+      margin-top: 0;
+      color: #102a43;
+    }
+
+    p, li {
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .section-description,
+    .block-description {
+      margin-top: -4px;
+    }
+
+    .report-block + .report-block {
+      margin-top: 18px;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      min-width: 680px;
+    }
+
+    .report-table th,
+    .report-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .report-table thead th {
+      background: var(--table-head);
+      color: #102a43;
+    }
+
+    .report-figure {
+      margin: 18px 0 0;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .report-figure img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      display: block;
+      height: auto;
+    }
+
+    .report-figure figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .metric-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: #f8fbfd;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #102a43;
+    }
+
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    ul, ol {
+      margin-bottom: 0;
+      padding-left: 24px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 20px 12px 32px;
+      }
+
+      .hero {
+        padding: 22px 20px;
+        border-radius: 16px;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      section {
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .report-table {
+        font-size: 0.9rem;
+        min-width: 560px;
+      }
+
+      .report-figure img {
+        border-radius: 12px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
+
+      body {
+        background: #ffffff;
+        color: #000000;
+        font-size: 11pt;
+      }
+
+      .page {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .hero {
+        background: #ffffff;
+        color: #000000;
+        border: 2px solid var(--border);
+        box-shadow: none;
+        margin-bottom: 16px;
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      .hero-subtitle {
+        color: #374151;
+      }
+
+      section {
+        box-shadow: none;
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      .report-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 9.5pt;
+      }
+
+      .report-table thead {
+        display: table-header-group;
+      }
+
+      .report-table tr,
+      .metric-card,
+      .report-figure,
+      pre {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .report-figure img {
+        max-height: 235mm;
+        object-fit: contain;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <h1>Relatorio de Treinamento de Modelos</h1>
+      <p class="hero-subtitle">Comparacao entre modelos de classificacao treinados sobre os dados processados.</p>
+    </header>
+    <div class="content">
+      <section><h2>Visao geral</h2><div class="report-block"><div class="metrics-grid"><div class="metric-card"><strong>Shape do treino</strong><span>(16000, 15)</span></div><div class="metric-card"><strong>Shape do teste</strong><span>(4000, 15)</span></div><div class="metric-card"><strong>Coluna alvo</strong><span>Graduacao_Indicada</span></div><div class="metric-card"><strong>Modelos avaliados</strong><span>LogisticRegression, RandomForest, XGBoost e GradientBoosting</span></div><div class="metric-card"><strong>Config atual</strong><span>logreg_c=0.5, logreg_max_iter=10000, rf_n_estimators=500, rf_max_depth=20, xgb_n_estimators=500, xgb_max_depth=6, xgb_learning_rate=0.1, gb_n_estimators=300, gb_max_depth=5, gb_learning_rate=0.05</span></div></div></div></section><section><h2>Comparacao de metricas</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Modelo</th>
+      <th>Accuracy</th>
+      <th>Precision Macro</th>
+      <th>Recall Macro</th>
+      <th>F1 Macro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LogisticRegression</td>
+      <td>0.6822</td>
+      <td>0.5446</td>
+      <td>0.6272</td>
+      <td>0.5687</td>
+    </tr>
+    <tr>
+      <td>RandomForest</td>
+      <td>0.9460</td>
+      <td>0.8221</td>
+      <td>0.8628</td>
+      <td>0.8323</td>
+    </tr>
+    <tr>
+      <td>XGBoost</td>
+      <td>0.9462</td>
+      <td>0.8363</td>
+      <td>0.8568</td>
+      <td>0.8447</td>
+    </tr>
+    <tr>
+      <td>GradientBoosting</td>
+      <td>0.9465</td>
+      <td>0.8281</td>
+      <td>0.8583</td>
+      <td>0.8371</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><figure class="report-figure"><img src="figures/model_metrics_comparison.png" alt="Comparacao de metricas dos modelos" /><figcaption>Comparacao visual entre Accuracy, Precision Macro, Recall Macro e F1 Macro.</figcaption></figure></div></section><section><h2>Melhor modelo</h2><div class="report-block"><p>O melhor modelo foi <code>XGBoost</code>.</p><p>A escolha foi feita priorizando o <code>F1 macro</code>, porque a variavel alvo e desbalanceada e essa metrica representa melhor o desempenho medio entre todas as classes. Em caso de empate, a <code>accuracy</code> foi usada como criterio de desempate.</p><p>O modelo selecionado obteve F1 macro de <code>0.8447</code> e accuracy de <code>0.9463</code>.</p></div></section><section><h2>Tracking de experimentos</h2><div class="report-block"><p>O experimento foi registrado no MLflow com o nome <code>graduacao-indicada-classificacao</code>.</p><p>O backend local de tracking foi salvo em <code>mlruns</code> e o run inclui parametros dos modelos, metricas de teste, o relatorio HTML e o artefato do melhor modelo.</p></div></section><section><h2>Classification report do melhor modelo</h2><div class="report-block"><pre>                            precision    recall  f1-score   support
+
+             Administração       0.99      0.99      0.99       924
+     Ciência da Computação       0.92      0.89      0.91       151
+        Comunicação Social       0.49      0.64      0.56        42
+                    Design       0.98      0.98      0.98       562
+                   Direito       0.99      0.98      0.98       723
+           Educação Física       0.93      0.90      0.92       186
+                Engenharia       0.91      0.90      0.90       135
+  Licenciatura em Biologia       0.31      0.42      0.35        26
+ Licenciatura em Geografia       0.72      0.75      0.74        57
+  Licenciatura em História       0.73      0.85      0.79        89
+Licenciatura em Matemática       0.91      0.89      0.90       143
+                  Medicina       0.98      0.96      0.97       477
+               Odontologia       0.97      0.96      0.97       313
+                Psicologia       0.89      0.88      0.88       172
+
+                  accuracy                           0.95      4000
+                 macro avg       0.84      0.86      0.84      4000
+              weighted avg       0.95      0.95      0.95      4000
+</pre></div></section>
+    </div>
+  </main>
+</body>
+</html>

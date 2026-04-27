@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configura Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Atualiza pip
+        run: python -m pip install --upgrade pip
+
+      - name: Instala dependências
+        run: pip install -r requirements.txt
+
+      - name: Valida sintaxe e importação
+        run: python -m compileall app src
+
+      - name: Valida entrypoints do projeto
+        run: |
+          python -m src.eda --help
+          python -m src.preprocess --help
+          python -m src.train --help
+          python -m src.run_pipeline --help
+
+      - name: Valida arquivos obrigatórios
+        run: |
+          test -f data/dataset_graduacao_indicada.csv
+          test -f artifacts/preprocess_pipeline.joblib
+          test -f artifacts/deploy_logreg.joblib
+          test -f artifacts/deploy_rf_compacto.joblib
+          test -f render.yaml
+
+      - name: Executa smoke tests da API
+        run: |
+          python - <<'PY'
+          import os
+          from fastapi import FastAPI
+          from fastapi.testclient import TestClient
+
+          from app.main import app, health_check, lifespan
+
+
+          valid_payload = {
+              "Idade": 21,
+              "Curso_Tecnico": "Nao",
+              "Anos_Para_Formar": 4,
+              "Gosta_Matematica": 4,
+              "Gosta_Programacao": 4,
+              "Gosta_Biologia": 2,
+              "Gosta_Fisica": 4,
+              "Gosta_Quimica": 2,
+              "Gosta_Arte_Design": 2,
+              "Gosta_Comunicacao": 3,
+              "Gosta_Negocios": 2,
+              "Gosta_Historia": 2,
+              "Gosta_Geografia": 2,
+          }
+
+          invalid_payload = {
+              **valid_payload,
+              "Gosta_Matematica": 9,
+          }
+
+          expected_health_keys = {
+              "error",
+              "model_loaded",
+              "model_name",
+              "model_path",
+              "model_variant",
+              "preprocess_loaded",
+              "status",
+          }
+
+          with TestClient(app) as client:
+              health_response = client.get("/health")
+              assert health_response.status_code == 200, health_response.text
+              assert set(health_response.json().keys()) == expected_health_keys, health_response.json()
+
+              predict_response = client.post("/predict", json=valid_payload)
+              assert predict_response.status_code == 200, predict_response.text
+              assert set(predict_response.json().keys()) == {
+                  "prediction",
+                  "probability",
+                  "model_name",
+              }, predict_response.json()
+
+              invalid_response = client.post("/predict", json=invalid_payload)
+              assert invalid_response.status_code == 422, invalid_response.text
+
+              form_response = client.post("/web/predict", data=valid_payload)
+              assert form_response.status_code == 200, form_response.text
+
+          os.environ["MODEL_VARIANT"] = "invalido"
+          degraded_app = FastAPI(lifespan=lifespan)
+          degraded_app.add_api_route("/health", health_check, methods=["GET"])
+
+          with TestClient(degraded_app) as degraded_client:
+              degraded_health = degraded_client.get("/health")
+              assert degraded_health.status_code == 503, degraded_health.text
+              assert degraded_health.json()["status"] == "degraded", degraded_health.json()
+
+          os.environ.pop("MODEL_VARIANT", None)
+          PY

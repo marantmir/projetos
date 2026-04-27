@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatório de EDA</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #52606d;
+      --accent: #0b7285;
+      --border: #d9e2ec;
+      --table-head: #e6f4f1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0b7285, #1f4e79);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 1rem;
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    h2, h3 {
+      margin-top: 0;
+      color: #102a43;
+    }
+
+    p, li {
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .section-description,
+    .block-description {
+      margin-top: -4px;
+    }
+
+    .report-block + .report-block {
+      margin-top: 18px;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      min-width: 680px;
+    }
+
+    .report-table th,
+    .report-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .report-table thead th {
+      background: var(--table-head);
+      color: #102a43;
+    }
+
+    .report-figure {
+      margin: 18px 0 0;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .report-figure img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      display: block;
+      height: auto;
+    }
+
+    .report-figure figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .metric-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: #f8fbfd;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #102a43;
+    }
+
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    ul, ol {
+      margin-bottom: 0;
+      padding-left: 24px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 20px 12px 32px;
+      }
+
+      .hero {
+        padding: 22px 20px;
+        border-radius: 16px;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      section {
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .report-table {
+        font-size: 0.9rem;
+        min-width: 560px;
+      }
+
+      .report-figure img {
+        border-radius: 12px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
+
+      body {
+        background: #ffffff;
+        color: #000000;
+        font-size: 11pt;
+      }
+
+      .page {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .hero {
+        background: #ffffff;
+        color: #000000;
+        border: 2px solid var(--border);
+        box-shadow: none;
+        margin-bottom: 16px;
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      .hero-subtitle {
+        color: #374151;
+      }
+
+      section {
+        box-shadow: none;
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      .report-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 9.5pt;
+      }
+
+      .report-table thead {
+        display: table-header-group;
+      }
+
+      .report-table tr,
+      .metric-card,
+      .report-figure,
+      pre {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .report-figure img {
+        max-height: 235mm;
+        object-fit: contain;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <h1>Relatório de EDA</h1>
+      <p class="hero-subtitle">Análise exploratória do dataset de graduação indicada.</p>
+    </header>
+    <div class="content">
+      <section><h2>Visão geral do dataset</h2><p class="muted section-description">Resumo inicial da base usada na análise exploratória.</p><div class="report-block"><div class="metrics-grid"><div class="metric-card"><strong>Arquivo de origem</strong><span>data/dataset_graduacao_indicada.csv</span></div><div class="metric-card"><strong>Linhas</strong><span>20000</span></div><div class="metric-card"><strong>Colunas</strong><span>14</span></div><div class="metric-card"><strong>Número de classes</strong><span>14</span></div></div></div></section><section><h2>Qualidade dos dados</h2><div class="report-block"><h3>Tipos das colunas</h3><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>índice</th>
+      <th>tipo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Idade</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Curso_Tecnico</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <td>Anos_Para_Formar</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Matematica</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Programacao</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Biologia</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Fisica</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Quimica</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Arte_Design</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Comunicacao</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Negocios</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Historia</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Gosta_Geografia</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <td>Graduacao_Indicada</td>
+      <td>object</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><h3>Valores nulos</h3><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>índice</th>
+      <th>quantidade_nulos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Idade</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Curso_Tecnico</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Anos_Para_Formar</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Matematica</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Programacao</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Biologia</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Fisica</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Quimica</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Arte_Design</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Comunicacao</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Negocios</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Historia</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Gosta_Geografia</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Graduacao_Indicada</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><p>Linhas duplicadas identificadas: 0.</p></div></section><section><h2>Estatísticas descritivas</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>índice</th>
+      <th>Idade</th>
+      <th>Anos_Para_Formar</th>
+      <th>Gosta_Matematica</th>
+      <th>Gosta_Programacao</th>
+      <th>Gosta_Biologia</th>
+      <th>Gosta_Fisica</th>
+      <th>Gosta_Quimica</th>
+      <th>Gosta_Arte_Design</th>
+      <th>Gosta_Comunicacao</th>
+      <th>Gosta_Negocios</th>
+      <th>Gosta_Historia</th>
+      <th>Gosta_Geografia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>count</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+      <td>20000.00</td>
+    </tr>
+    <tr>
+      <td>mean</td>
+      <td>33.52</td>
+      <td>5.00</td>
+      <td>3.00</td>
+      <td>2.99</td>
+      <td>3.02</td>
+      <td>2.99</td>
+      <td>3.00</td>
+      <td>2.99</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.02</td>
+      <td>2.99</td>
+    </tr>
+    <tr>
+      <td>std</td>
+      <td>9.75</td>
+      <td>1.41</td>
+      <td>1.42</td>
+      <td>1.42</td>
+      <td>1.41</td>
+      <td>1.41</td>
+      <td>1.42</td>
+      <td>1.41</td>
+      <td>1.41</td>
+      <td>1.41</td>
+      <td>1.42</td>
+      <td>1.41</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td>17.00</td>
+      <td>3.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>25%</td>
+      <td>25.00</td>
+      <td>4.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+    </tr>
+    <tr>
+      <td>50%</td>
+      <td>33.00</td>
+      <td>5.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <td>75%</td>
+      <td>42.00</td>
+      <td>6.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+      <td>4.00</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td>50.00</td>
+      <td>7.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+      <td>5.00</td>
+    </tr>
+  </tbody>
+</table></div></div></section><section><h2>Distribuição da variável alvo</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Graduacao_Indicada</th>
+      <th>quantidade</th>
+      <th>porcentagem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Administração</td>
+      <td>4620</td>
+      <td>23.10</td>
+    </tr>
+    <tr>
+      <td>Direito</td>
+      <td>3618</td>
+      <td>18.09</td>
+    </tr>
+    <tr>
+      <td>Design</td>
+      <td>2809</td>
+      <td>14.04</td>
+    </tr>
+    <tr>
+      <td>Medicina</td>
+      <td>2386</td>
+      <td>11.93</td>
+    </tr>
+    <tr>
+      <td>Odontologia</td>
+      <td>1563</td>
+      <td>7.82</td>
+    </tr>
+    <tr>
+      <td>Educação Física</td>
+      <td>930</td>
+      <td>4.65</td>
+    </tr>
+    <tr>
+      <td>Psicologia</td>
+      <td>859</td>
+      <td>4.30</td>
+    </tr>
+    <tr>
+      <td>Ciência da Computação</td>
+      <td>755</td>
+      <td>3.78</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Matemática</td>
+      <td>714</td>
+      <td>3.57</td>
+    </tr>
+    <tr>
+      <td>Engenharia</td>
+      <td>676</td>
+      <td>3.38</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em História</td>
+      <td>444</td>
+      <td>2.22</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Geografia</td>
+      <td>287</td>
+      <td>1.44</td>
+    </tr>
+    <tr>
+      <td>Comunicação Social</td>
+      <td>209</td>
+      <td>1.04</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Biologia</td>
+      <td>130</td>
+      <td>0.65</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><figure class="report-figure"><img src="figures/target_distribution.png" alt="Distribuição da variável alvo" /><figcaption>Distribuição das graduações indicadas no dataset.</figcaption></figure></div></section><section><h2>Distribuição de Curso_Tecnico</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Curso_Tecnico</th>
+      <th>quantidade</th>
+      <th>porcentagem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sim</td>
+      <td>10094</td>
+      <td>50.47</td>
+    </tr>
+    <tr>
+      <td>Não</td>
+      <td>9906</td>
+      <td>49.53</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><figure class="report-figure"><img src="figures/curso_tecnico_distribution.png" alt="Distribuição de Curso Técnico" /><figcaption>Comparação entre estudantes com e sem curso técnico.</figcaption></figure></div></section><section><h2>Distribuição de idade</h2><div class="report-block"><p>A idade apresenta distribuição bem espalhada entre 17 e 50 anos, sem concentração extrema em uma faixa específica.</p></div><div class="report-block"><figure class="report-figure"><img src="figures/age_distribution.png" alt="Distribuição de idade" /><figcaption>Histograma das idades com destaque para média e mediana.</figcaption></figure></div></section><section><h2>Correlação entre features</h2><div class="report-block"><p>Para calcular a correlação, a variável categórica <code>Curso_Tecnico</code> foi convertida para valores binários (<code>Sim</code> = 1 e <code>Não</code> = 0).</p></div><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>índice</th>
+      <th>Idade</th>
+      <th>Curso_Tecnico</th>
+      <th>Anos_Para_Formar</th>
+      <th>Gosta_Matematica</th>
+      <th>Gosta_Programacao</th>
+      <th>Gosta_Biologia</th>
+      <th>Gosta_Fisica</th>
+      <th>Gosta_Quimica</th>
+      <th>Gosta_Arte_Design</th>
+      <th>Gosta_Comunicacao</th>
+      <th>Gosta_Negocios</th>
+      <th>Gosta_Historia</th>
+      <th>Gosta_Geografia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Idade</td>
+      <td>1.000</td>
+      <td>0.000</td>
+      <td>-0.000</td>
+      <td>-0.001</td>
+      <td>0.000</td>
+      <td>0.007</td>
+      <td>0.003</td>
+      <td>0.006</td>
+      <td>0.005</td>
+      <td>-0.007</td>
+      <td>-0.001</td>
+      <td>0.007</td>
+      <td>0.002</td>
+    </tr>
+    <tr>
+      <td>Curso_Tecnico</td>
+      <td>0.000</td>
+      <td>1.000</td>
+      <td>0.006</td>
+      <td>0.001</td>
+      <td>-0.005</td>
+      <td>0.003</td>
+      <td>-0.002</td>
+      <td>-0.007</td>
+      <td>0.013</td>
+      <td>0.000</td>
+      <td>0.008</td>
+      <td>-0.009</td>
+      <td>-0.008</td>
+    </tr>
+    <tr>
+      <td>Anos_Para_Formar</td>
+      <td>-0.000</td>
+      <td>0.006</td>
+      <td>1.000</td>
+      <td>0.004</td>
+      <td>-0.012</td>
+      <td>-0.001</td>
+      <td>-0.000</td>
+      <td>0.016</td>
+      <td>0.007</td>
+      <td>0.005</td>
+      <td>0.007</td>
+      <td>-0.003</td>
+      <td>-0.022</td>
+    </tr>
+    <tr>
+      <td>Gosta_Matematica</td>
+      <td>-0.001</td>
+      <td>0.001</td>
+      <td>0.004</td>
+      <td>1.000</td>
+      <td>-0.008</td>
+      <td>-0.001</td>
+      <td>0.004</td>
+      <td>0.001</td>
+      <td>0.002</td>
+      <td>0.004</td>
+      <td>0.007</td>
+      <td>-0.002</td>
+      <td>-0.009</td>
+    </tr>
+    <tr>
+      <td>Gosta_Programacao</td>
+      <td>0.000</td>
+      <td>-0.005</td>
+      <td>-0.012</td>
+      <td>-0.008</td>
+      <td>1.000</td>
+      <td>-0.008</td>
+      <td>0.003</td>
+      <td>0.009</td>
+      <td>-0.001</td>
+      <td>-0.007</td>
+      <td>0.002</td>
+      <td>0.006</td>
+      <td>0.002</td>
+    </tr>
+    <tr>
+      <td>Gosta_Biologia</td>
+      <td>0.007</td>
+      <td>0.003</td>
+      <td>-0.001</td>
+      <td>-0.001</td>
+      <td>-0.008</td>
+      <td>1.000</td>
+      <td>0.002</td>
+      <td>-0.002</td>
+      <td>-0.001</td>
+      <td>0.000</td>
+      <td>-0.005</td>
+      <td>0.008</td>
+      <td>0.001</td>
+    </tr>
+    <tr>
+      <td>Gosta_Fisica</td>
+      <td>0.003</td>
+      <td>-0.002</td>
+      <td>-0.000</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>0.002</td>
+      <td>1.000</td>
+      <td>0.001</td>
+      <td>0.006</td>
+      <td>-0.004</td>
+      <td>-0.002</td>
+      <td>-0.010</td>
+      <td>-0.001</td>
+    </tr>
+    <tr>
+      <td>Gosta_Quimica</td>
+      <td>0.006</td>
+      <td>-0.007</td>
+      <td>0.016</td>
+      <td>0.001</td>
+      <td>0.009</td>
+      <td>-0.002</td>
+      <td>0.001</td>
+      <td>1.000</td>
+      <td>-0.011</td>
+      <td>-0.006</td>
+      <td>0.004</td>
+      <td>0.019</td>
+      <td>-0.001</td>
+    </tr>
+    <tr>
+      <td>Gosta_Arte_Design</td>
+      <td>0.005</td>
+      <td>0.013</td>
+      <td>0.007</td>
+      <td>0.002</td>
+      <td>-0.001</td>
+      <td>-0.001</td>
+      <td>0.006</td>
+      <td>-0.011</td>
+      <td>1.000</td>
+      <td>0.005</td>
+      <td>-0.007</td>
+      <td>-0.009</td>
+      <td>0.008</td>
+    </tr>
+    <tr>
+      <td>Gosta_Comunicacao</td>
+      <td>-0.007</td>
+      <td>0.000</td>
+      <td>0.005</td>
+      <td>0.004</td>
+      <td>-0.007</td>
+      <td>0.000</td>
+      <td>-0.004</td>
+      <td>-0.006</td>
+      <td>0.005</td>
+      <td>1.000</td>
+      <td>0.008</td>
+      <td>-0.010</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <td>Gosta_Negocios</td>
+      <td>-0.001</td>
+      <td>0.008</td>
+      <td>0.007</td>
+      <td>0.007</td>
+      <td>0.002</td>
+      <td>-0.005</td>
+      <td>-0.002</td>
+      <td>0.004</td>
+      <td>-0.007</td>
+      <td>0.008</td>
+      <td>1.000</td>
+      <td>0.008</td>
+      <td>0.006</td>
+    </tr>
+    <tr>
+      <td>Gosta_Historia</td>
+      <td>0.007</td>
+      <td>-0.009</td>
+      <td>-0.003</td>
+      <td>-0.002</td>
+      <td>0.006</td>
+      <td>0.008</td>
+      <td>-0.010</td>
+      <td>0.019</td>
+      <td>-0.009</td>
+      <td>-0.010</td>
+      <td>0.008</td>
+      <td>1.000</td>
+      <td>0.005</td>
+    </tr>
+    <tr>
+      <td>Gosta_Geografia</td>
+      <td>0.002</td>
+      <td>-0.008</td>
+      <td>-0.022</td>
+      <td>-0.009</td>
+      <td>0.002</td>
+      <td>0.001</td>
+      <td>-0.001</td>
+      <td>-0.001</td>
+      <td>0.008</td>
+      <td>0.000</td>
+      <td>0.006</td>
+      <td>0.005</td>
+      <td>1.000</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><figure class="report-figure"><img src="figures/feature_correlation.png" alt="Correlação entre features" /><figcaption>Mapa de calor com as relações lineares entre as variáveis explicativas.</figcaption></figure></div></section><section><h2>Média das preferências por alvo</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Graduacao_Indicada</th>
+      <th>Gosta_Matematica</th>
+      <th>Gosta_Programacao</th>
+      <th>Gosta_Biologia</th>
+      <th>Gosta_Fisica</th>
+      <th>Gosta_Quimica</th>
+      <th>Gosta_Arte_Design</th>
+      <th>Gosta_Comunicacao</th>
+      <th>Gosta_Negocios</th>
+      <th>Gosta_Historia</th>
+      <th>Gosta_Geografia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Administração</td>
+      <td>2.92</td>
+      <td>2.96</td>
+      <td>2.63</td>
+      <td>2.97</td>
+      <td>2.69</td>
+      <td>2.96</td>
+      <td>2.55</td>
+      <td>4.47</td>
+      <td>2.70</td>
+      <td>3.01</td>
+    </tr>
+    <tr>
+      <td>Ciência da Computação</td>
+      <td>3.73</td>
+      <td>4.38</td>
+      <td>2.94</td>
+      <td>2.48</td>
+      <td>3.07</td>
+      <td>2.90</td>
+      <td>3.02</td>
+      <td>2.94</td>
+      <td>2.97</td>
+      <td>2.89</td>
+    </tr>
+    <tr>
+      <td>Comunicação Social</td>
+      <td>2.77</td>
+      <td>2.90</td>
+      <td>1.54</td>
+      <td>2.93</td>
+      <td>3.12</td>
+      <td>2.52</td>
+      <td>3.64</td>
+      <td>2.03</td>
+      <td>1.89</td>
+      <td>2.94</td>
+    </tr>
+    <tr>
+      <td>Design</td>
+      <td>2.91</td>
+      <td>2.92</td>
+      <td>2.61</td>
+      <td>2.96</td>
+      <td>2.69</td>
+      <td>4.43</td>
+      <td>2.51</td>
+      <td>2.00</td>
+      <td>2.66</td>
+      <td>2.98</td>
+    </tr>
+    <tr>
+      <td>Direito</td>
+      <td>2.91</td>
+      <td>2.94</td>
+      <td>2.62</td>
+      <td>2.94</td>
+      <td>2.71</td>
+      <td>2.99</td>
+      <td>4.47</td>
+      <td>2.97</td>
+      <td>3.98</td>
+      <td>2.98</td>
+    </tr>
+    <tr>
+      <td>Educação Física</td>
+      <td>2.84</td>
+      <td>2.79</td>
+      <td>3.50</td>
+      <td>2.88</td>
+      <td>2.43</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>2.90</td>
+      <td>2.96</td>
+    </tr>
+    <tr>
+      <td>Engenharia</td>
+      <td>4.27</td>
+      <td>2.93</td>
+      <td>2.89</td>
+      <td>4.32</td>
+      <td>2.93</td>
+      <td>2.90</td>
+      <td>2.89</td>
+      <td>2.94</td>
+      <td>2.87</td>
+      <td>2.82</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Biologia</td>
+      <td>2.26</td>
+      <td>3.01</td>
+      <td>2.88</td>
+      <td>2.83</td>
+      <td>2.64</td>
+      <td>2.02</td>
+      <td>1.98</td>
+      <td>1.96</td>
+      <td>2.24</td>
+      <td>2.29</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Geografia</td>
+      <td>2.12</td>
+      <td>2.87</td>
+      <td>2.00</td>
+      <td>2.97</td>
+      <td>2.87</td>
+      <td>1.93</td>
+      <td>2.39</td>
+      <td>1.92</td>
+      <td>2.01</td>
+      <td>4.10</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em História</td>
+      <td>2.23</td>
+      <td>3.01</td>
+      <td>2.05</td>
+      <td>2.88</td>
+      <td>2.93</td>
+      <td>2.02</td>
+      <td>1.99</td>
+      <td>1.98</td>
+      <td>4.15</td>
+      <td>2.90</td>
+    </tr>
+    <tr>
+      <td>Licenciatura em Matemática</td>
+      <td>4.31</td>
+      <td>3.01</td>
+      <td>2.10</td>
+      <td>3.04</td>
+      <td>2.83</td>
+      <td>1.93</td>
+      <td>2.18</td>
+      <td>2.02</td>
+      <td>2.86</td>
+      <td>3.02</td>
+    </tr>
+    <tr>
+      <td>Medicina</td>
+      <td>2.82</td>
+      <td>2.93</td>
+      <td>4.40</td>
+      <td>2.95</td>
+      <td>3.98</td>
+      <td>2.93</td>
+      <td>3.01</td>
+      <td>2.97</td>
+      <td>3.04</td>
+      <td>3.02</td>
+    </tr>
+    <tr>
+      <td>Odontologia</td>
+      <td>3.03</td>
+      <td>2.95</td>
+      <td>4.37</td>
+      <td>3.04</td>
+      <td>4.44</td>
+      <td>2.91</td>
+      <td>2.98</td>
+      <td>2.92</td>
+      <td>3.04</td>
+      <td>2.96</td>
+    </tr>
+    <tr>
+      <td>Psicologia</td>
+      <td>2.90</td>
+      <td>2.86</td>
+      <td>3.50</td>
+      <td>3.02</td>
+      <td>2.45</td>
+      <td>1.97</td>
+      <td>3.51</td>
+      <td>1.99</td>
+      <td>2.36</td>
+      <td>2.91</td>
+    </tr>
+  </tbody>
+</table></div></div><div class="report-block"><figure class="report-figure"><img src="figures/preference_by_course.png" alt="Mapa de calor das preferências" /><figcaption>Média das preferências agrupadas por graduação indicada.</figcaption></figure></div></section><section><h2>Top 5 classes da variável alvo</h2><div class="report-block"><div class="table-wrap"><table class="dataframe report-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Graduacao_Indicada</th>
+      <th>quantidade</th>
+      <th>porcentagem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Administração</td>
+      <td>4620</td>
+      <td>23.10</td>
+    </tr>
+    <tr>
+      <td>Direito</td>
+      <td>3618</td>
+      <td>18.09</td>
+    </tr>
+    <tr>
+      <td>Design</td>
+      <td>2809</td>
+      <td>14.04</td>
+    </tr>
+    <tr>
+      <td>Medicina</td>
+      <td>2386</td>
+      <td>11.93</td>
+    </tr>
+    <tr>
+      <td>Odontologia</td>
+      <td>1563</td>
+      <td>7.82</td>
+    </tr>
+  </tbody>
+</table></div></div></section><section><h2>Insights</h2><div class="report-block"><ol><li>O dataset está limpo para modelagem: não foram encontrados valores nulos nem linhas duplicadas nas 20.000 observações.</li><li>A variável alvo está desbalanceada. Administração representa 23,10% da base, enquanto Licenciatura em Biologia representa apenas 0,65%.</li><li>A correlação linear entre as features é muito fraca no geral, o que sugere baixa multicolinearidade. Em valor absoluto, o par mais forte foi Anos_Para_Formar x Gosta_Geografia: correlação -0,022 (valor absoluto 0,022).</li><li>As variáveis de preferência parecem informativas para o alvo: Engenharia e Licenciatura em Matemática apresentam médias altas em matemática/física, Medicina e Odontologia se destacam em biologia/química, e Direito/Administração concentram maior afinidade com comunicação ou negócios.</li><li>As distribuições das variáveis numéricas são bastante regulares, com médias próximas ao centro da escala e frequências semelhantes entre categorias, o que sugere uma base mais controlada do que dados reais de produção.</li></ol></div></section><section><h2>Conclusão</h2><div class="report-block"><p>O dataset está pronto para a próxima etapa do pipeline. O principal ponto de atenção para a modelagem é o desbalanceamento da variável alvo. Além disso, como a base apresenta comportamento bastante regular, é importante interpretar os resultados com cautela e validar o desempenho do modelo antes de tirar conclusões mais fortes.</p></div></section>
+    </div>
+  </main>
+</body>
+</html>
