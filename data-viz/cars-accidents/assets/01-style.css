@@ -1,0 +1,187 @@
+body {
+	font-family: sans-serif;
+	color: white;
+}
+
+.col-uf-ocorrencia{
+	padding-top: 1em;
+	background-color: #282828;
+}
+
+
+.col-ano-ocorrencia{
+	padding-top: 1em;
+	background-color: #282828;
+}
+
+.col-uf-ocorrencia{
+
+	padding-top: 1em;
+	padding-left: 1em;
+	background-color: #282828;
+	border-left: solid;
+	border-color: #222;
+	border-width: 9px;
+}
+
+.rc-slider-step{
+	background-color: #404040;
+
+}
+
+.rc-slider-handle{
+	border-style: solid;
+	border-color: lightcoral;
+}
+
+.rc-slider-dot{
+	border-style: solid;
+	border-width: 0.1em;
+	border-color: white;
+} 
+
+#vitimas-selected {
+	display: flex;
+	align-items: center;
+	align-content: center;
+}
+
+.rc-slider-dot-active{
+	border-style: solid;
+	border-color: lightcoral;
+}
+
+.rc-slider-handle:hover{
+	border-style: solid;
+	border-color: coral;
+}
+
+.rc-slider-mark-text{
+    position: absolute;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    color: #999;
+	font-size: 7.5px;
+}
+
+.year-slider{
+	background-color: #2f3031;
+}
+
+.dropdown-states{
+	padding: 0 0 0 1em;
+	background-color: #2f3031;
+	height: 30px;
+	font-size: 8px;
+	align-content: center;
+}
+
+/* .container-row-filters{
+	display: flex;
+	justify-content: space-between;
+	margin-right: 0;
+	margin-left: 0;
+	background-color: #282828;
+} */
+
+#line-plot{
+	height: 50%;
+}
+
+ 
+#vitimas-selected{
+	padding: 0 0 0 1em;
+	background-color: #2f3031;
+	height: 30px;
+	font-size: 8px;
+	align-content: center;
+} 
+
+
+
+ .vitimas-col{
+	padding-top: 1em;
+	/* border-left: solid;
+	border-color: #222;
+	border-width: 8px; */
+
+} 
+
+
+/*------- second section*/
+
+
+
+#first-line-separator{
+	border-style: solid;
+	border-width: 4px;
+	border-color: lightcoral;
+
+}
+
+.text-general{
+	text-align: center;
+	color : #F8F9F9;
+	align-items: center;
+
+}
+
+.div-config{
+	background-color: #2f3031;
+	padding: 1em 0;
+}
+
+#dashboard-sub-title{
+	color: #A6ACAF;
+	font-size: 10px;
+	font-weight: 'light';
+	text-align: center;
+	padding-top: 15px;
+}
+
+.text-filter{
+	color: white;
+	font-size: 9px;
+	font-weight: 'light';
+	padding-left: 5px;
+}
+
+.vitimas-selected{
+	border-left: solid;
+	border-color: lightcoral;
+	border-width: 2px;
+}
+
+.cols-filters{
+	border-left: solid;
+	border-color: lightcoral;
+	border-width: 2px;
+}
+
+
+/* dropdown menu options */
+.VirtualizedSelectOption {
+    background-color: white;
+    color: rgb(3, 3, 3);
+ }
+
+
+ #dropdown-uf .Select.dcc_control.is-open {
+	max-height: 10%;
+	overflow-y:visible;
+  }
+  
+  #dropdown-uf .Select.dcc_control {
+	max-height: 10px;
+	overflow-y:auto;
+  }
+
+  #lineplot{
+	  margin-top: 2%;
+  }
+
+  #first-div{
+	margin: 0 1em;
+}
